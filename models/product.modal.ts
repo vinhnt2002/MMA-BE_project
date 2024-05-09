@@ -1,5 +1,5 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
-import { IUser } from "./user.model";
+import mongoose, { Document, Model, Schema } from 'mongoose';
+import { IUser } from './user.model';
 
 interface IComment extends Document {
   user: IUser;
@@ -22,51 +22,51 @@ interface IProduct extends Document {
   category: string;
   reviews: IReview[];
   ratings?: number;
-//   purschase?: number;
+  //   purschase?: number;
 }
 
 const reviewSchema = new Schema<IReview>({
   user: Object,
   rating: {
     type: Number,
-    default: 0,
+    default: 0
   },
   comment: String,
-  commentReplies: [Object],
+  commentReplies: [Object]
 });
 
 const productSchema = new Schema<IProduct>({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   description: {
     type: String,
-    required: true,
+    required: true
   },
   price: {
     type: Number,
-    required: true,
+    required: true
   },
   thumbnail: {
     public_id: {
-      type: String,
+      type: String
     },
     url: {
-      type: String,
-    },
+      type: String
+    }
   },
   category: { type: String, required: true },
   reviews: [reviewSchema],
   ratings: {
     type: Number,
-    default: 0,
-  },
-//   purschase: {
-//     type: Number,
-//     default: 0,
-//   },
+    default: 0
+  }
+  //   purschase: {
+  //     type: Number,
+  //     default: 0,
+  //   },
 });
 
-const productModel: Model<IProduct> = mongoose.model("Product", productSchema);
+const productModel: Model<IProduct> = mongoose.model('Product', productSchema);
 export default productModel;

@@ -1,14 +1,14 @@
-import mongoose, { Document, Schema, Model } from "mongoose";
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
 enum Status {
-  PENDING = "Pending",
-  COMPLETED = "Completed",
-  SHIPPED = "Shipped",
+  PENDING = 'Pending',
+  COMPLETED = 'Completed',
+  SHIPPED = 'Shipped'
 }
 
 enum PaymentMethod {
-  CASH = "Cash",
-  BANK = "Bank",
+  CASH = 'Cash',
+  BANK = 'Bank'
 }
 
 export interface IOrder extends Document {
@@ -23,35 +23,35 @@ const OrderSchema = new Schema<IOrder>(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+      ref: 'User',
+      required: true
     },
     products: [
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-        },
-      },
+          ref: 'Product'
+        }
+      }
     ],
     payment_info: {
       type: String,
-      enum: Object.values(PaymentMethod),
+      enum: Object.values(PaymentMethod)
       // default: PaymentMethod.CASH,
     },
     status: {
-        type: String,
-        enum: Object.values(Status),
-        default: Status.PENDING,
+      type: String,
+      enum: Object.values(Status),
+      default: Status.PENDING
     },
     total_amount: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true
     }
   },
   { timestamps: true }
 );
 
-const orderModel = mongoose.model<IOrder>("Order", OrderSchema);
+const orderModel = mongoose.model<IOrder>('Order', OrderSchema);
 
 export default orderModel;

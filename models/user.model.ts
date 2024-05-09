@@ -1,15 +1,16 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
-import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken'
-require("dotenv").config()
+import mongoose, { Document, Model, Schema } from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { config } from 'dotenv';
+config();
 
 const emailRegexPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 enum UserRole {
-  GUEST = "guest",
-  MEMBER = "member",
-  STAFF = "staff",
-  ADMIN = "admin",
+  GUEST = 'guest',
+  MEMBER = 'member',
+  STAFF = 'staff',
+  ADMIN = 'admin'
 }
 
 export interface IUser extends Document {
@@ -21,90 +22,87 @@ export interface IUser extends Document {
     url: string;
   };
   role: UserRole;
-  points?: number 
+  points?: number;
   isVerified: boolean;
   orders: Array<{ orderId: Schema.Types.ObjectId }>;
   comparePassword: (password: string) => Promise<boolean>;
-  signAccessToken: () => void
-  signRefreshToken: () => void
+  signAccessToken: () => void;
+  signRefreshToken: () => void;
 }
-
-
 
 const userSchema: Schema<IUser> = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please enter your name"],
+      required: [true, 'Please enter your name']
     },
     email: {
       type: String,
-      required: [true, "Please enter your email"],
+      required: [true, 'Please enter your email'],
       validate: {
         validator: function (value: string) {
           return emailRegexPattern.test(value);
         },
-        message: "please enter a valid email",
+        message: 'please enter a valid email'
       },
-      unique: true,
+      unique: true
     },
     password: {
       type: String,
-      minlength: [6, "Password must be at least 6 characters"],
+      minlength: [6, 'Password must be at least 6 characters'],
       select: false
     },
     avatar: {
       public_id: String,
-      url: String,
+      url: String
     },
     role: {
       type: String,
       enum: Object.values(UserRole),
-      default: UserRole.GUEST,
+      default: UserRole.GUEST
     },
     points: { type: Number, default: 0 },
     isVerified: {
       type: Boolean,
-      default: false,
+      default: false
     },
     orders: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Order",
-      },
-    ],
+        ref: 'Order'
+      }
+    ]
   },
   { timestamps: true }
 );
 
 //Hash Password beforce saving
-userSchema.pre<IUser>("save", async function (next) {
-    if(!this.isModified('password')){
-        next()
-    }
-    
-    this.password = await bcrypt.hash(this.password, 10)
-    next()
+userSchema.pre<IUser>('save', async function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
-//compare password 
-userSchema.methods.comparePassword = async function (enteredPassword: string) : Promise<boolean> {
-    return await bcrypt.compare(enteredPassword, this.password)
-}
-
+//compare password
+userSchema.methods.comparePassword = async function (enteredPassword: string): Promise<boolean> {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 // --------------jwt--------------
 
-//sign access token 
+//sign access token
 userSchema.methods.signAccessToken = function () {
-  return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || "", {expiresIn: "5m"});
+  return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || '', { expiresIn: '5m' });
 };
 
 //sign refresh token
 userSchema.methods.signRefreshToken = function () {
-  return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || "", {expiresIn: "3d"});
+  return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || '', { expiresIn: '3d' });
 };
 
-const userModal : Model<IUser> = mongoose.model("User", userSchema)
+const userModal: Model<IUser> = mongoose.model('User', userSchema);
 
 export default userModal;

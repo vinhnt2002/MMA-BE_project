@@ -1,17 +1,18 @@
-require("dotenv").config();
-import express, { NextFunction, Request, Response } from "express";
+import express, { NextFunction, Request, Response } from 'express';
 
 export const app = express();
 
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import { ErrorMiddleWare } from "./middleware/error";
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { ErrorMiddleWare } from './middleware/error';
 
-import authRouter from "./routes/auth.route";
-import userRouter from "./routes/user.route";
+import authRouter from './routes/auth.route';
+import userRouter from './routes/user.route';
+import { config } from 'dotenv';
+config();
 
 //body parser
-app.use(express.json({ limit: "50mb" }));
+app.use(express.json({ limit: '50mb' }));
 
 //cookie parser
 app.use(cookieParser());
@@ -19,26 +20,26 @@ app.use(cookieParser());
 //cors => cross origin sharing
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: process.env.ORIGIN
   })
 );
 
 //routes
 
-app.use("/api/v1", authRouter);
+app.use('/api/v1', authRouter);
 
-app.use("/api/v1", userRouter);
+app.use('/api/v1', userRouter);
 
 //testing api
-app.get("/test", (req: Request, res: Response, next: NextFunction) => {
+app.get('/test', (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({
     success: true,
-    message: "Api is working",
+    message: 'Api is working'
   });
 });
 
 //unknow api
-app.all("*", (req: Request, res: Response, next: NextFunction) => {
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
   const err = new Error(`Route ${req.originalUrl} not found`) as any;
   err.statusCode = 404;
   next(err);
