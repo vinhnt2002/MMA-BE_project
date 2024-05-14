@@ -9,6 +9,7 @@ import { ErrorMiddleWare } from './middleware/error';
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
 import { config } from 'dotenv';
+import productRouter from './routes/product.route';
 config();
 
 //body parser
@@ -20,7 +21,9 @@ app.use(cookieParser());
 //cors => cross origin sharing
 app.use(
   cors({
-    origin: process.env.ORIGIN
+    // origin: process.env.ORIGIN
+    origin: '*',
+    credentials: true,
   })
 );
 
@@ -29,6 +32,8 @@ app.use(
 app.use('/api/v1', authRouter);
 
 app.use('/api/v1', userRouter);
+
+app.use('/api/v1', productRouter)
 
 //testing api
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
