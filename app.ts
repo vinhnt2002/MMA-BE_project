@@ -10,6 +10,7 @@ import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
 import { config } from 'dotenv';
 import productRouter from './routes/product.route';
+import postRouter from './routes/post.route';
 config();
 
 //body parser
@@ -34,6 +35,8 @@ app.use('/api/v1', authRouter);
 app.use('/api/v1', userRouter);
 
 app.use('/api/v1', productRouter)
+
+app.use('/api/v1', postRouter)
 
 //testing api
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
