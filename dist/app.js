@@ -21,9 +21,12 @@ exports.app.use(express_1.default.json({ limit: '50mb' }));
 exports.app.use((0, cookie_parser_1.default)());
 //cors => cross origin sharing
 exports.app.use((0, cors_1.default)({
-    // origin: process.env.ORIGIN
-    origin: '*',
-    credentials: true,
+    origin: process.env.ORIGIN,
+    // origin: '*',
+    // origin: 'http://localhost:8081',
+    // origin: 'http://192.168.1.173:8081',
+    // origin: '192.168.1.173',
+    credentials: true
 }));
 //routes
 exports.app.use('/api/v1', auth_route_1.default);

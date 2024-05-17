@@ -22,9 +22,12 @@ app.use(cookieParser());
 //cors => cross origin sharing
 app.use(
   cors({
-    // origin: process.env.ORIGIN
-    origin: '*',
-    credentials: true,
+    origin: process.env.ORIGIN,
+    // origin: '*',
+    // origin: 'http://localhost:8081',
+    // origin: 'http://192.168.1.173:8081',
+    // origin: '192.168.1.173',
+    credentials: true
   })
 );
 
@@ -34,9 +37,9 @@ app.use('/api/v1', authRouter);
 
 app.use('/api/v1', userRouter);
 
-app.use('/api/v1', productRouter)
+app.use('/api/v1', productRouter);
 
-app.use('/api/v1', postRouter)
+app.use('/api/v1', postRouter);
 
 //testing api
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
