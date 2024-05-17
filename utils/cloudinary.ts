@@ -1,17 +1,13 @@
-import cloudinary from "cloudinary";
+import cloudinary from 'cloudinary';
 
-export const uploadImageToCloudinary = async (
-  image: string,
-  folder: string,
-  width?: number
-) => {
+export const uploadImageToCloudinary = async (image: string, folder: string, width?: number) => {
   const result = await cloudinary.v2.uploader.upload(image, { width, folder });
 
   // console.log(result);
 
   return {
     public_id: result.public_id,
-    url: result.secure_url,
+    url: result.secure_url
   };
 };
 
