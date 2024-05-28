@@ -196,7 +196,7 @@ export const addReplyReview = CatchAsyncErrors(async (req: Request, res: Respons
       return next(new ErrorHandler('Product not found', 404));
     }
 
-    const review = product.reviews.find((review) => review._id.toString() === reviewId);
+    const review = product.reviews.find((review) => review._id!.toString() === reviewId);
 
     if (!review) {
       return next(new ErrorHandler('review not found', 404));
