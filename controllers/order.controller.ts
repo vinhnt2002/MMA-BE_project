@@ -14,7 +14,7 @@ export const createOrder = CatchAsyncErrors(
         data.userId = authourize;
       }
       createOrderService(req, res, next);
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(error.message, 400));
     }
   }

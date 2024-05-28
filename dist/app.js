@@ -14,6 +14,7 @@ const user_route_1 = __importDefault(require("./routes/user.route"));
 const dotenv_1 = require("dotenv");
 const product_route_1 = __importDefault(require("./routes/product.route"));
 const post_route_1 = __importDefault(require("./routes/post.route"));
+const order_route_1 = __importDefault(require("./routes/order.route"));
 (0, dotenv_1.config)();
 //body parser
 exports.app.use(express_1.default.json({ limit: '50mb' }));
@@ -33,6 +34,7 @@ exports.app.use('/api/v1', auth_route_1.default);
 exports.app.use('/api/v1', user_route_1.default);
 exports.app.use('/api/v1', product_route_1.default);
 exports.app.use('/api/v1', post_route_1.default);
+exports.app.use('/api/v1', order_route_1.default);
 //testing api
 exports.app.get('/test', (req, res, next) => {
     res.status(200).json({

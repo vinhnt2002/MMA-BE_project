@@ -19,6 +19,6 @@ exports.createPostService = (0, catchAsyncErrors_1.CatchAsyncErrors)((data, res)
     const post = yield post_modal_1.default.create(data);
     res.status(201).json({
         success: true,
-        post,
+        post
     });
 }));

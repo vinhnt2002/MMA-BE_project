@@ -12,18 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteImageFromCloudinary = exports.uploadImageToCloudinary = void 0;
-const cloudinary_1 = __importDefault(require("cloudinary"));
-const uploadImageToCloudinary = (image, folder, width) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield cloudinary_1.default.v2.uploader.upload(image, { width, folder });
-    // console.log(result);
-    return {
-        public_id: result.public_id,
-        url: result.secure_url
-    };
-});
-exports.uploadImageToCloudinary = uploadImageToCloudinary;
-const deleteImageFromCloudinary = (public_id) => __awaiter(void 0, void 0, void 0, function* () {
-    yield cloudinary_1.default.v2.uploader.destroy(public_id);
-});
-exports.deleteImageFromCloudinary = deleteImageFromCloudinary;
+exports.createOrder = void 0;
+const catchAsyncErrors_1 = require("../middleware/catchAsyncErrors");
+const error_handler_1 = __importDefault(require("../utils/error-handler"));
+const order_service_1 = require("../services/order.service");
+exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const data = req.body;
+        const authourize = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
+        if (authourize) {
+            data.userId = authourize;
+        }
+        (0, order_service_1.createOrderService)(req, res, next);
+    }
+    catch (error) {
+        next(new error_handler_1.default(error.message, 400));
+    }
+}));

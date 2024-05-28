@@ -21,21 +21,22 @@ const redis_1 = require("../utils/redis");
 exports.isAuthenticated = (0, catchAsyncErrors_1.CatchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const access_token = req.cookies.access_token;
     if (!access_token) {
-        return next(new error_handler_1.default("Please login to access this resourse", 400));
+        return next(new error_handler_1.default('Please login to access this resourse', 400));
     }
     const decoded = jsonwebtoken_1.default.verify(access_token, process.env.ACCESS_TOKEN);
     if (!decoded) {
-        return next(new error_handler_1.default("Access token is not valid", 400));
+        return next(new error_handler_1.default('Access token is not valid', 400));
     }
+    //user ID
     const user = yield redis_1.redis.get(decoded.id);
     if (!user) {
-        return next(new error_handler_1.default("User not found", 400));
+        return next(new error_handler_1.default('User not found', 400));
     }
     req.user = JSON.parse(user);
     next();
 }));
-// validate user role 
-// ["admin", "manager", "user"]
+// validate user role
+// ["admin", "staff", "member"]
 const authorized = (...roles) => {
     return (req, res, next) => {
         var _a, _b;

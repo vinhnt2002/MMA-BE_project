@@ -12,18 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteImageFromCloudinary = exports.uploadImageToCloudinary = void 0;
-const cloudinary_1 = __importDefault(require("cloudinary"));
-const uploadImageToCloudinary = (image, folder, width) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield cloudinary_1.default.v2.uploader.upload(image, { width, folder });
-    // console.log(result);
-    return {
-        public_id: result.public_id,
-        url: result.secure_url
-    };
-});
-exports.uploadImageToCloudinary = uploadImageToCloudinary;
-const deleteImageFromCloudinary = (public_id) => __awaiter(void 0, void 0, void 0, function* () {
-    yield cloudinary_1.default.v2.uploader.destroy(public_id);
-});
-exports.deleteImageFromCloudinary = deleteImageFromCloudinary;
+exports.createOrderService = void 0;
+const catchAsyncErrors_1 = require("../middleware/catchAsyncErrors");
+const order_model_1 = __importDefault(require("../models/order.model"));
+exports.createOrderService = (0, catchAsyncErrors_1.CatchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const order = yield order_model_1.default.create(req.body);
+    res.status(201).json({
+        success: true,
+        order
+    });
+}));

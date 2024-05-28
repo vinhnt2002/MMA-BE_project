@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
-    "start": "ts-node-dev --respawn --transpile-only server.ts",
+    "start": "node dist/server.js",
     "build": "rimraf dist && tsc",
     "add-build": "git add dist",
     "ts.check": "tsc --project tsconfig.json"
@@ -19,7 +19,7 @@
     "ts.check",
     "build",
     "add-build"
-],
+  ],
   "author": "vinhnt2002",
   "license": "ISC",
   "compilerOptions": {
