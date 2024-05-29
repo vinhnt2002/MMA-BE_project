@@ -11,5 +11,5 @@ const redisClient = () => {
     throw new Error(`Redis connect fail`);
 };
 exports.redis = new ioredis_1.Redis(redisClient(), { tls: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
     } });

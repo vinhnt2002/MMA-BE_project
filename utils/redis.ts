@@ -10,5 +10,5 @@ const redisClient = () => {
 }
 
 export const redis = new Redis(redisClient(), {tls: {
-    rejectUnauthorized: false
+    rejectUnauthorized: false,
 }})

@@ -59,7 +59,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     role: {
       type: String,
       enum: Object.values(UserRole),
-      default: UserRole.GUEST
+      default: UserRole.MEMBER
     },
     points: { type: Number, default: 0 },
     isVerified: {

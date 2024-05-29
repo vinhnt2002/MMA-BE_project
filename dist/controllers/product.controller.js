@@ -90,23 +90,26 @@ exports.getSingleProduct = (0, catchAsyncErrors_1.CatchAsyncErrors)((req, res, n
 exports.getAllProduct = (0, catchAsyncErrors_1.CatchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield product_modal_1.default.find({});
-        const isCachedProduct = yield redis_1.redis.get('allProduct');
-        if (isCachedProduct) {
-            console.log('store in redis');
-            const products = JSON.parse(isCachedProduct);
-            res.status(200).json({
-                success: true,
-                products
-            });
-        }
-        else {
-            console.log('store in mongodb');
-            yield redis_1.redis.set('allProduct', JSON.stringify(products));
-            res.status(200).json({
-                success: true,
-                products
-            });
-        }
+        res.status(200).json({
+            success: true,
+            products
+        });
+        // const isCachedProduct = await redis.get('allProduct');
+        // if (isCachedProduct) {
+        //   console.log('store in redis');
+        //   const products = JSON.parse(isCachedProduct);
+        //   res.status(200).json({
+        //     success: true,
+        //     products
+        //   });
+        // } else {
+        //   console.log('store in mongodb');
+        //   await redis.set('allProduct', JSON.stringify(products));
+        //   res.status(200).json({
+        //     success: true,
+        //     products
+        //   });
+        // }
     }
     catch (error) {
         return next(new error_handler_1.default(error.message, 500));

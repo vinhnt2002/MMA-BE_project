@@ -90,24 +90,28 @@ export const getAllProduct = CatchAsyncErrors(async (req: Request, res: Response
   try {
     const products = await productModel.find({});
 
-    const isCachedProduct = await redis.get('allProduct');
+    res.status(200).json({
+      success: true,
+      products
+    });
+    // const isCachedProduct = await redis.get('allProduct');
 
-    if (isCachedProduct) {
-      console.log('store in redis');
-      const products = JSON.parse(isCachedProduct);
-      res.status(200).json({
-        success: true,
-        products
-      });
-    } else {
-      console.log('store in mongodb');
+    // if (isCachedProduct) {
+    //   console.log('store in redis');
+    //   const products = JSON.parse(isCachedProduct);
+    //   res.status(200).json({
+    //     success: true,
+    //     products
+    //   });
+    // } else {
+    //   console.log('store in mongodb');
 
-      await redis.set('allProduct', JSON.stringify(products));
-      res.status(200).json({
-        success: true,
-        products
-      });
-    }
+    //   await redis.set('allProduct', JSON.stringify(products));
+    //   res.status(200).json({
+    //     success: true,
+    //     products
+    //   });
+    // }
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 500));
   }

@@ -93,21 +93,24 @@ exports.getAllPost = (0, catchAsyncErrors_1.CatchAsyncErrors)((req, res, next) =
         const userId = req.query.userId;
         const queryObject = userId ? { user: userId } : {};
         const posts = yield post_modal_1.default.find(queryObject);
-        const isCachedPosts = yield redis_1.redis.get('allPost');
-        if (isCachedPosts) {
-            const posts = JSON.parse(isCachedPosts);
-            res.status(200).json({
-                success: true,
-                posts
-            });
-        }
-        else {
-            yield redis_1.redis.set('allPost', JSON.stringify(posts));
-            res.status(200).json({
-                success: true,
-                posts
-            });
-        }
+        res.status(200).json({
+            success: true,
+            posts
+        });
+        // const isCachedPosts = await redis.get('allPost');
+        // if (isCachedPosts) {
+        //   const posts = JSON.parse(isCachedPosts);
+        //   res.status(200).json({
+        //     success: true,
+        //     posts
+        //   });
+        // } else {
+        //   await redis.set('allPost', JSON.stringify(posts));
+        //   res.status(200).json({
+        //     success: true,
+        //     posts
+        //   });
+        // }
     }
     catch (error) {
         return next(new error_handler_1.default(error.message, 500));
